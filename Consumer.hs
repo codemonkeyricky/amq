@@ -50,4 +50,4 @@ consumer qn =
                   ++ show (msgContent m)
                   ++ ", responding with: "
                   ++ show p
-            threadDelay 1000000 -- 1 second delay between processing
+            -- threadDelay 1000000 -- 1 second delay between processing

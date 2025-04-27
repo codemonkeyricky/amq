@@ -30,7 +30,7 @@ producer qn =
       putStrLn $ "Producer started sending to queue: " ++ qn
       forever $ do
         writeQ outQ nullType [] Pong
-        -- putStrLn "Sent Pong"
+        putStrLn "Sent Pong"
         -- threadDelay 10000000 -- 10 second delay between messages
   where
     Pong = Pong -- Your Ping/Pong data type

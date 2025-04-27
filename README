@@ -1,2 +1,4 @@
 docker run -p 61616:61616 -p 8161:8161 rmohr/activemq
 
+docker run --name amq -p 61616:61616 -p 8161:8161 -v /home/richard/dev/amq/broker.xml:/var/artemis-instance/etc/broker.xml --rm apache/activemq-artemis
+docker run --name amq -p 61616:61616 -p 8161:8161 -v /home/richard/dev/amq/broker.xml:/var/artemis-instance/etc/broker.xml --rm apache/activemq-artemis
