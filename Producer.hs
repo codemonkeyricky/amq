@@ -25,12 +25,12 @@ producer qn =
     61616
     [OAuth "artemis" "artemis", OHeartBeat (5000, 5000)]
     [] $ \c -> do
-    let oconv = return . U.fromString . show
+    let oconv = return . show
     withWriter c "Q-OUT" qn [] [] oconv $ \outQ -> do
       putStrLn $ "Producer started sending to queue: " ++ qn
       forever $ do
         writeQ outQ nullType [] Pong
-        putStrLn "Sent Pong"
+        -- putStrLn "Sent Pong"
         -- threadDelay 10000000 -- 10 second delay between messages
   where
     Pong = Pong -- Your Ping/Pong data type
