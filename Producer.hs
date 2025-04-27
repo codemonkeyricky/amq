@@ -29,11 +29,7 @@ producer qn =
     withWriter c "Q-OUT" qn [] [] oconv $ \outQ -> do
       putStrLn $ "Producer started sending to queue: " ++ qn
       forever $ do
-        writeQ
-          outQ
-          nullType
-          [("persistent", "true"), ("delivery-mode", "2")]
-          Pong
+        writeQ outQ nullType [] Pong
         putStrLn "Sent Pong"
         -- threadDelay 10000000 -- 10 second delay between messages
   where

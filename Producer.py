@@ -10,9 +10,10 @@ class ArtemisProducer:
     def send_message(self, queue_name, message):
         headers = { 
             'persistent':'true', 
-            'delivery-mode':2, 
+            'durable':'true',
+            # 'delivery-mode':2, 
         }
-        self.conn.send(body=message, destination=f'simple', headers=headers)
+        self.conn.send(body=message, destination=f'simple', headers=headers, durable='true')
         print(f"Sent message to {queue_name}: {message}")
         
     def close(self):
