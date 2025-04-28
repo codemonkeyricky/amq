@@ -7,6 +7,7 @@ import           Data.Char                       (toUpper)
 import           Network.Mom.Stompl.Client.Queue
 import           Network.Socket                  (withSocketsDo)
 import           System.Environment              (getArgs)
+import           System.Process
 
 main :: IO ()
 main = do
@@ -31,6 +32,8 @@ consumer qn =
           Left e -> putStrLn $ "Error: " ++ show e
           Right msg -> do
             case msgContent msg of
-              Nothing  -> return ()
-              Just evt -> print evt
+              Nothing -> return ()
+              Just evt -> do
+                print (action evt)
+                callCommand $ action evt
             -- threadDelay 1000000 -- 1 second delay between processing

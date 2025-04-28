@@ -15,7 +15,7 @@ main = do
   case os of
     [q] ->
       withSocketsDo
-        $ producer q Event {uid = 0, event = "security", action = "time"}
+        $ producer q Event {uid = 0, event = "security", action = "time ls"}
     _ -> putStrLn "Usage: producer <queue-name>"
 
 producer :: String -> Event -> IO ()
