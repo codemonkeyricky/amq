@@ -24,7 +24,7 @@ strToPing s =
   case map toUpper s of
     "PING" -> return Ping
     "PONG" -> return Pong
-    _      -> error $ "Not a Ping: '" ++ s ++ "'"
+    _      -> return Ping
 
 consumer :: String -> IO ()
 consumer qn =

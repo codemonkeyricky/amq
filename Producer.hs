@@ -1,6 +1,7 @@
 import           Codec.MIME.Type                 (nullType)
 import           Control.Concurrent              (threadDelay)
-import           Control.Monad                   (forever)
+import           Control.Monad                   --- (forever, replicateM_)
+import qualified Data.ByteString.Char8           as B
 import qualified Data.ByteString.UTF8            as U
 import           Network.Mom.Stompl.Client.Queue
 import           Network.Socket                  (withSocketsDo)
@@ -25,12 +26,12 @@ producer qn =
     61616
     [OAuth "artemis" "artemis", OHeartBeat (5000, 5000)]
     [] $ \c -> do
-    let oconv = return . show
+    let oconv = return . B.pack
     withWriter c "Q-OUT" qn [] [] oconv $ \outQ -> do
       putStrLn $ "Producer started sending to queue: " ++ qn
-      forever $ do
-        writeQ outQ nullType [] Pong
-        -- putStrLn "Sent Pong"
-        -- threadDelay 10000000 -- 10 second delay between messages
-  where
-    Pong = Pong -- Your Ping/Pong data type
+      forM_ [1..10000] $ \_ -> do
+        writeQ outQ nullType [] "Pong"
+      -- forever $ do
+      --   writeQ outQ nullType [] "Pong"
+      -- replicateM_ 10000 $ writeQ outQ nullType [] "Pong"
+      threadDelay 1000000
