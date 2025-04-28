@@ -1,4 +1,5 @@
 import           Codec.MIME.Type                 (nullType)
+import           Common
 import           Control.Concurrent              (threadDelay)
 import           Control.Monad                   (forever)
 import qualified Data.ByteString.UTF8            as U
@@ -14,18 +15,6 @@ main = do
     [q] -> withSocketsDo $ consumer q
     _   -> putStrLn "Usage: consumer <queue-name>"
 
-data Ping
-  = Ping
-  | Pong
-  deriving (Show)
-
-strToPing :: String -> IO Ping
-strToPing s =
-  case map toUpper s of
-    "PING" -> return Ping
-    "PONG" -> return Pong
-    _      -> return Ping
-
 consumer :: String -> IO ()
 consumer qn =
   withConnection
@@ -33,21 +22,15 @@ consumer qn =
     61616
     [OAuth "artemis" "artemis", OHeartBeat (5000, 5000)]
     [] $ \c -> do
-    let iconv _ _ _ = strToPing . U.toString
+    let iconv _ _ _ = return . deserialize
     withReader c "Q-IN" qn [] [] iconv $ \inQ -> do
       putStrLn $ "Consumer started listening to queue: " ++ qn
       forever $ do
         eiM <- try $ readQ inQ
         case eiM of
           Left e -> putStrLn $ "Error: " ++ show e
-          Right m -> do
-            let p =
-                  case msgContent m of
-                    Ping -> Pong
-                    Pong -> Ping
-            putStrLn
-              $ "Received: "
-                  ++ show (msgContent m)
-                  ++ ", responding with: "
-                  ++ show p
+          Right msg -> do
+            case msgContent msg of
+              Nothing  -> return ()
+              Just evt -> print evt
             -- threadDelay 1000000 -- 1 second delay between processing
