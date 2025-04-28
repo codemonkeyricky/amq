@@ -1,11 +1,13 @@
 import           Codec.MIME.Type                 (nullType)
 import           Control.Concurrent              (threadDelay)
-import           Control.Monad                   --- (forever, replicateM_)
+import           Control.Monad
 import qualified Data.ByteString.Char8           as B
 import qualified Data.ByteString.UTF8            as U
 import           Network.Mom.Stompl.Client.Queue
 import           Network.Socket                  (withSocketsDo)
 import           System.Environment              (getArgs)
+
+import           Common
 
 data Ping
   = Ping
@@ -29,7 +31,7 @@ producer qn =
     let oconv = return . B.pack
     withWriter c "Q-OUT" qn [] [] oconv $ \outQ -> do
       putStrLn $ "Producer started sending to queue: " ++ qn
-      forM_ [1..10000] $ \_ -> do
+      forM_ [1 .. 10000] $ \_ -> do
         writeQ outQ nullType [] "Pong"
       -- forever $ do
       --   writeQ outQ nullType [] "Pong"
