@@ -9,11 +9,6 @@ import           System.Environment              (getArgs)
 
 import           Common
 
-data Ping
-  = Ping
-  | Pong
-  deriving (Show)
-
 main :: IO ()
 main = do
   os <- getArgs
