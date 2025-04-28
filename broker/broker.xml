@@ -274,6 +274,12 @@ under the License.
                <queue name="ExpiryQueue" />
             </anycast>
          </address>
+         <address name="simple">
+            <anycast>
+               <queue name="simple" />
+            </anycast>
+         </address>
+
 
       </addresses>
 
